@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ML Language Translator</title>
+  <style>
+    /* Background Styling */
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* Card Container */
+    .translator-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0px 8px 25px rgba(0, 0, 0, 0.2);
+      padding: 30px;
+      max-width: 650px;
+      width: 100%;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    /* Title */
+    h1 {
+      margin-bottom: 20px;
+      font-size: 28px;
+      color: #4c4c9d;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    }
+
+    /* Input Area */
+    textarea {
+      width: 100%;
+      height: 120px;
+      border: 2px solid #dcdcdc;
+      border-radius: 12px;
+      padding: 12px;
+      font-size: 16px;
+      resize: none;
+      transition: 0.3s;
+    }
+
+    textarea:focus {
+      border-color: #667eea;
+      outline: none;
+      box-shadow: 0px 0px 8px rgba(102, 126, 234, 0.5);
+    }
+
+    /* Dropdown */
+    select {
+      margin-top: 15px;
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      background: #f9f9f9;
+      transition: 0.3s;
+    }
+
+    select:hover {
+      border-color: #764ba2;
+    }
+
+    /* Button */
+    button {
+      margin-top: 20px;
+      padding: 12px 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.3s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0px 6px 15px rgba(118, 75, 162, 0.4);
+    }
+
+    /* Output Box */
+    #output {
+      margin-top: 25px;
+      padding: 15px;
+      background: #f5f6ff;
+      border: 2px solid #e2e2f0;
+      border-radius: 15px;
+      font-size: 17px;
+      font-weight: 500;
+      color: #333;
+      min-height: 60px;
+      white-space: pre-wrap;
+    }
+
+    /* Fade In Animation */
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <div class="translator-card">
+    <h1>🌐 AI Language Translator</h1>
+    <textarea id="inputText" placeholder="Type something to translate..."></textarea>
+    <br/>
+    <select id="languageSelect">
+      <option value="ta">Tamil</option>
+      <option value="te">Telegu</option>
+      <option value="kn">Kannada</option>
+      <option value="hi">Hindi</option>
+      <option value="ml">Malaiyalam</option>
+    </select>
+
+    <select id="languageSelect">
+      <option value="ta">Tamil</option>
+      <option value="te">Telegu</option>
+      <option value="kn">Kannada</option>
+      <option value="hi">Hindi</option>
+      <option value="ml">Malaiyalam</option>
+    </select>
+
+    <select id="languageSelect">
+      <option value="ta">Tamil</option>
+      <option value="te">Telegu</option>
+      <option value="kn">Kannada</option>
+      <option value="hi">Hindi</option>
+      <option value="ml">Malaiyalam</option>
+    </select>
+    <br/>
+    <button onclick="translateText()">✨ Translate</button>
+
+    <div id="output">Your translation will appear here...</div>
+  </div>
+
+  <script>
+    async function translateText() {
+      const text = document.getElementById('inputText').value;
+      const targetLanguage = document.getElementById('languageSelect').value;
+      if (!text) {
+        alert("⚠️ Please enter some text.");
+        return;
+      }
+      const response = await fetch('http://localhost:8000/translate/', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({text, target_language: targetLanguage})
+      });
+      const data = await response.json();
+      document.getElementById('output').innerText = data.translated_text || "❌ Translation failed.";
+    }
+  </script>
+</body>
+</html>
